@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Hello from './Hello';
+import Todo from './Todo';
 import Routes from '../Routes';
 class Todos extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {ray: ["Stepan", "Michael"]};
-    this.addName = this.addName.bind(this);
+    this.state = {ray: ["Kill Bill", "Buy Milk"]};
+    this.add = this.add.bind(this);
   }
 
-  addName(name){
+  add(name){
     console.log("adding name in App")
     let oldNames = [...this.state.ray];
     oldNames.push(name);
@@ -21,7 +21,7 @@ class Todos extends Component {
       <div>
 
         { this.state.ray.map( (e, i) => (
-            <Hello key={Math.random()+"_hello"} name={e} addName={this.addName}/>
+            <Todo key={i} name={e} add={this.add}/>
         ))}
       </div>
 
@@ -31,3 +31,11 @@ class Todos extends Component {
 }
 
 export default Todos;
+
+
+
+
+
+
+
+
