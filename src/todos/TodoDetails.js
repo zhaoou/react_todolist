@@ -11,6 +11,7 @@ class Todos extends Component {
       <div>
 
         todo details
+        {this.props.match.params.id}
       </div>
 
 

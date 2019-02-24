@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import {Switch, Route, Link, NavLink, BrowserRouter} from "react-router-dom";
+import {Switch, Route, Link, NavLink, BrowserRouter, withRouter} from "react-router-dom";
+
 
 
 class Todo extends Component {
@@ -53,7 +54,7 @@ class Todo extends Component {
   }
 }
 
-export default Todo;
+export default withRouter(Todo);
 
 
 
