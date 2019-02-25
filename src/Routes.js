@@ -4,7 +4,7 @@ import Todos from "./todos/Todos";
 import TodoDetails from "./todos/TodoDetails";
 
 
-let About = () => (<h3> Abuot </h3>);
+let About = (props) => (<h3> Abuot {props.name}</h3>);
 let NotFound = () => (<h3> Dis dint find  </h3>);
 
 let Links = () => (
@@ -42,12 +42,10 @@ class Routes extends Component {
             <div>
                 <NavLinks/>
                 <Switch>
-                    <Route path="/about" component={About} />
+                    <Route path="/about"  render={ (props) => <About {...props} name={"Joel"} /> } />
                     <Route exact path="/" component={Todos} />
                     <Route path="/todo/:id" component={TodoDetails} />
-
                     <Route path="/:page" component={NotFound} />
-
                 </Switch>
                 <Links/>
             </div>
