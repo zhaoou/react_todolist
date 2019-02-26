@@ -15,8 +15,10 @@ class Users extends Component {
 
     add(name, email){
         let oldUsers = [...this.state.users];
+        console.log("111", oldUsers)
         let existingUsers = this.state.users.filter( x => x.email == email);
-        if(existingUsers){
+        console.log("222", email)
+        if(existingUsers[0]){
             existingUsers[0].name = name;
         } else{
             oldUsers.push( {name: name, email: email});

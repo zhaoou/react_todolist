@@ -10,7 +10,9 @@ class UserForm extends Component{
         console.log("form created")
 
         this.user = {name: "", email: ""};
+        console.log("constructor2")
         if(props.match && props.users) {
+            console.log("constructor2")
             this.user = props.users.filter(u => u.email == this.props.match.params.id)[0];
         }
         this.save = this.save.bind(this);
@@ -25,17 +27,22 @@ class UserForm extends Component{
 
 
     shouldComponentUpdate(nextProps) {
-        console.log("getting props", nextProps);
+        console.log("getting props", nextProps,"aaa");
         if(nextProps.match && nextProps.users) {
             let matchingUsers =  nextProps.users.filter(u => u.email == nextProps.match.params.id)
             if(matchingUsers) {
+                console.log("ccc",matchingUsers[0])
                 this.user = matchingUsers[0];
                 console.log("new user: ", this.user);
 
             }else{
-                this.user = {name: "", email: ""};
+                this.user = {name:"", email:""};
             }
             return true;
+        }
+        else{
+            this.user = {name:"", email:""};
+            console.log("bbb", this.user);
         }
         return false;
     }
