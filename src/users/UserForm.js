@@ -7,26 +7,46 @@ class UserForm extends Component{
         super(props);
         this.nameRef = React.createRef();
         this.emailRef = React.createRef();
+        console.log("form created")
 
-        // copy of the function will be bound permanently to the object, not prototype, and will be looked up first when called. shadowing.
-        this.addUser = this.addUser.bind(this);
-        // this.goToTodo = this.goToTodo.bind(this);
+        this.user = {name: "", email: ""};
+        if(props.match && props.users) {
+            this.user = props.users.filter(u => u.email == this.props.match.params.id)[0];
+        }
+        this.save = this.save.bind(this);
     }
 
     // this function belongs to Todo.prototype
-    addUser(event) {
+    save(event) {
         event.preventDefault();
-        this.props.add(this.nameRef.current.value, this.emailRef.current.value);
+        this.props.save(this.nameRef.current.value, this.emailRef.current.value);
         event.currentTarget.reset();
+    }
+
+
+    shouldComponentUpdate(nextProps) {
+        console.log("getting props", nextProps);
+        if(nextProps.match && nextProps.users) {
+            let matchingUsers =  nextProps.users.filter(u => u.email == nextProps.match.params.id)
+            if(matchingUsers) {
+                this.user = matchingUsers[0];
+                console.log("new user: ", this.user);
+
+            }else{
+                this.user = {name: "", email: ""};
+            }
+            return true;
+        }
+        return false;
     }
 
     render() {
         return (
             <Fragment>
-                {/*<h1> {this.props.user.userName}</h1>*/}
-                <form onSubmit={this.addUser}>
-                    <input type="text" ref={this.nameRef} name="name" />
-                    <input type="text" ref={this.emailRef} name="email" />
+                <h1>{this.props.user? "Edit user" :  "Create user"}</h1>
+                <form onSubmit={this.save}>
+                    <input type="text" ref={this.nameRef} name="name" defaultValue={this.user.name} />
+                    <input type="text" ref={this.emailRef} name="email" defaultValue={this.user.email}/>
                     <button type="submit"> add name in parent component</button>
                 </form>
                 <hr/>

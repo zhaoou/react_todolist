@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
 import User from "./User";
 import UserForm from "./UserForm";
+import {Link, Route, Switch} from "react-router-dom";
+import Todos from "../todos/Todos";
+import TodoDetails from "../todos/TodoDetails";
 class Users extends Component {
 
     constructor(props) {
         super(props);
         console.log("users created")
-        this.state = {users: [{userName:"michael",userEmail: "zhaoouzhao@aliyun.com"}]};
+        this.state = {users: [{email: "zhaoouzhao@aliyun.com", name:"michael"}]};
         this.add = this.add.bind(this)
-        this.edit = this.edit.bind(this);
     }
 
     add(name, email){
         let oldUsers = [...this.state.users];
-        let user = {userName:name, userEmail:email};
-        oldUsers.push(user);
+        let existingUsers = this.state.users.filter( x => x.email == email);
+        if(existingUsers){
+            existingUsers[0].name = name;
+        } else{
+            oldUsers.push( {name: name, email: email});
+        }
         this.setState({users: oldUsers});
-    }
-
-    edit(name, email){
-        console.log("edit is working")
-        // let oldUsers = [...this.state.users];
-        // let user = {userName:name, userEmail:email};
-        // oldUsers.push(user);
-        // this.setState({users: oldUsers});
     }
 
     render() {
@@ -31,13 +29,17 @@ class Users extends Component {
                 <div>
 
                     { this.state.users.map( (e, i) => (
-
-                        <User key={i}  user={e} add={this.add} edit={this.edit}/>
-
+                        <User key={i}  user={e} save={this.add} />
 
                     ))}
 
-                    <UserForm add={this.add}/>
+                    <Link to="/user/create">Add</Link>
+
+                    <Switch>
+                        <Route path="/user/create" render={ (props) => <UserForm {...props} save={this.add} /> } />
+                        <Route path="/user/edit/:id" render={ (props) => <UserForm {...props} save={this.add} users={this.state.users}/> } />
+                    </Switch>
+
                 </div>
         );
     }

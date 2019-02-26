@@ -21,7 +21,7 @@ let NavLinks = () => (
     <div>
         <NavLink exact activeStyle={s} to="/">home</NavLink>
         <NavLink exact activeStyle={s} to="/about">about</NavLink>
-        <NavLink exact activeStyle={s} to="/users">users</NavLink>
+        <NavLink exact activeStyle={s} to="/user">users</NavLink>
     </div>
 )
 
@@ -47,8 +47,7 @@ class Routes extends Component {
                     <Route path="/about"  render={ (props) => <About {...props} name={"Joel"} /> } />
                     <Route exact path="/" component={Todos} />
                     <Route path="/todo/:id" component={TodoDetails} />
-
-                    <Route path="/users" component={Users} />
+                    <Route path="/user" component={Users} />
 
                     <Route path="/:page" component={NotFound} />
                 </Switch>
