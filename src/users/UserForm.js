@@ -5,58 +5,42 @@ class UserForm extends Component{
 
     constructor(props) {
         super(props);
-        this.nameRef = React.createRef();
-        this.emailRef = React.createRef();
-        console.log("form created")
-
-        this.user = {name: "", email: ""};
-        console.log("constructor2")
-        if(props.match && props.users) {
-            console.log("constructor2")
-            this.user = props.users.filter(u => u.email == this.props.match.params.id)[0];
-        }
+        this.state = { user: props.user || {name:"", email:""} };
         this.save = this.save.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    // this function belongs to Todo.prototype
     save(event) {
         event.preventDefault();
-        this.props.save(this.nameRef.current.value, this.emailRef.current.value);
+        this.props.save(this.state.user);
         event.currentTarget.reset();
     }
 
 
-    shouldComponentUpdate(nextProps) {
-        console.log("getting props", nextProps,"aaa");
-        if(nextProps.match && nextProps.users) {
-            let matchingUsers =  nextProps.users.filter(u => u.email == nextProps.match.params.id)
-            if(matchingUsers) {
-                console.log("ccc",matchingUsers[0])
-                this.user = matchingUsers[0];
-                console.log("new user: ", this.user);
-
-            }else{
-                this.user = {name:"", email:""};
-            }
-            return true;
-        }
-        else{
-            this.user = {name:"", email:""};
-            console.log("bbb", this.user);
-        }
-        return false;
+    handleChange(event) {
+        console.log("event outside", event.target.name)
+        let {name, value} = event.target;
+        this.setState( old => {
+            let newUser = {...old.user};
+            newUser[name] = value;
+            return {user: newUser};
+        } );
     }
 
-    render() {
+
+
+    render(){
+        console.log(">>", JSON.stringify(this.state.user))
         return (
             <Fragment>
-                <h1>{this.props.user? "Edit user" :  "Create user"}</h1>
+                <h1>{this.props.user? `Editing ${this.state.user.email} ${this.state.user.name}`  :  "Create new user"}</h1>
+
                 <form onSubmit={this.save}>
-                    <input type="text" ref={this.nameRef} name="name" defaultValue={this.user.name} />
-                    <input type="text" ref={this.emailRef} name="email" defaultValue={this.user.email}/>
+                    <input type="hidden"  value={this.state.user.id}/>
+                    <input type="text"  name="name" value={this.state.user.name} onChange={this.handleChange}/>
+                    <input type="text"  name="email" value={this.state.user.email} onChange={this.handleChange}/>
                     <button type="submit"> add name in parent component</button>
                 </form>
-                <hr/>
             </Fragment>
         );
     }

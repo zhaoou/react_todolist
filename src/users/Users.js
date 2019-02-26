@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import User from "./User";
 import UserForm from "./UserForm";
 import {Link, Route, Switch} from "react-router-dom";
@@ -9,15 +9,14 @@ class Users extends Component {
     constructor(props) {
         super(props);
         console.log("users created")
-        this.state = {users: [{email: "zhaoouzhao@aliyun.com", name:"michael"}]};
+        this.state = {users: [{id:Math.random()+"_", email: "zhaoouzhao@aliyun.com", name:"michael"}]};
         this.add = this.add.bind(this)
     }
 
-    add(name, email){
+    add({name, email}){
+        console.log(name, email);
         let oldUsers = [...this.state.users];
-        console.log("111", oldUsers)
-        let existingUsers = this.state.users.filter( x => x.email == email);
-        console.log("222", email)
+        let existingUsers = this.state.users.filter( x => x.id == id);
         if(existingUsers[0]){
             existingUsers[0].name = name;
         } else{
@@ -28,21 +27,20 @@ class Users extends Component {
 
     render() {
         return (
-                <div>
+                <Fragment>
 
                     { this.state.users.map( (e, i) => (
-                        <User key={i}  user={e} save={this.add} />
+                        <Fragment>
+                            <User key={e.id}  user={e} save={this.add} />
+                            <Route path="/user/edit/:id" render={ (props) => <UserForm {...props} save={this.add} user={e}/> } />
+                        </Fragment>
 
                     ))}
 
                     <Link to="/user/create">Add</Link>
+                    <Route path="/user/create" render={ (props) => <UserForm {...props} save={this.add} /> } />
 
-                    <Switch>
-                        <Route path="/user/create" render={ (props) => <UserForm {...props} save={this.add} /> } />
-                        <Route path="/user/edit/:id" render={ (props) => <UserForm {...props} save={this.add} users={this.state.users}/> } />
-                    </Switch>
-
-                </div>
+                </Fragment>
         );
     }
 }

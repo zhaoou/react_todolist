@@ -5,18 +5,14 @@ class User extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
     }
-
 
 
     render() {
         return (
             <Fragment>
-                <h1>NAME: {this.props.user.name}</h1>
-                <h1>EMAIL: {this.props.user.email}</h1>
+                <h1>NAME {this.props.user.name.toString()} email {this.props.user.email}, id{this.props.user.id}</h1>
                 <Link to={`/user/edit/${this.props.user.email}`}>Edit</Link>
-                <hr/>
             </Fragment>
         );
     }
