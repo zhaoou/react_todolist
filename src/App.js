@@ -1,9 +1,16 @@
-import React, {Component, Fragment} from 'react';
-import Routes from './Routes';
+import React, {Component} from 'react';
+import Main from './Main';
+
 class App extends Component {
-  render() {
-    return <Routes/>;
-  }
+    render() {
+
+        return (
+            <div class="container-fluid">
+                <Main/>
+            </div>
+
+        )
+    }
 }
 
 export default App;
