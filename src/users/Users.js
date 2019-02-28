@@ -1,14 +1,12 @@
 import React, {Component, Fragment} from 'react';
-import User from "./User";
 import UserForm from "./UserForm";
-import {Link, NavLink, Route, Switch} from "react-router-dom";
+import {Link, NavLink, Route} from "react-router-dom";
 
 
 let NavLinks = () => (
-    <div>
-        <NavLink exact to="/user/create" className="btn btn-primary">Add</NavLink>
-
-    </div>
+    <nav className="nav flex-column">
+        <NavLink exact className="nav-link active" to="/user/create">Add</NavLink>
+    </nav>
 )
 
 let Routes = (pr) => (
@@ -43,24 +41,33 @@ class Users extends Component {
         return (
 
             <Fragment>
-                <div className="col bg-warning">
-                    <NavLinks/>
-                </div>
-                <div className="col">
 
-                    {this.state.users.map((e) => (
-                        <Fragment>
-                            <h3>{e.name.toString()} {e.email} {e.id}</h3>
-                            <User key={e.id} user={e} save={this.add}/>
-                            <Link to={`/user/edit/${e.id}`}>Edit</Link>
-                            <Route path="/user/edit/:id"
-                                   render={(props) => <UserForm {...props} save={this.add} user={e}/>}/>
-                        </Fragment>
-                    ))}
+                <div className="row">
+                    <div className="col-1 border-top border-primary">
+                        <NavLinks/>
+                    </div>
 
+                    <div className="col">
+                        <ul>
+                            {this.state.users.map((e) => (
+                                <li>
+                                    <Link to={`/user/edit/${e.id}`}>
+                                        <b>{e.name.toString()} {e.email}</b>
+                                    </Link>
+                                    <Route path="/user/edit/:id"
+                                           render={(props) => <UserForm {...props} save={this.add} user={e}/>}/>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className="col">
+                        <Routes add={this.add}/>
+                    </div>
                 </div>
-                <Routes add={this.add}/>
             </Fragment>
+
+
         );
     }
 }

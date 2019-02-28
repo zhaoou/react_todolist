@@ -5,7 +5,7 @@ class App extends Component {
     render() {
 
         return (
-            <div class="container-fluid">
+            <div className="container-fluid">
                 <Main/>
             </div>
 

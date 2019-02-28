@@ -30,14 +30,17 @@ class UserForm extends Component {
     render() {
         return (
             <Fragment>
-                <h1>{this.props.user ? `Editing ${this.state.user.email} ${this.state.user.name}` : "Create new user"}</h1>
 
-                <form class="border border-primary" onSubmit={this.save}>
-                    <input type="hidden" value={this.state.user.id}/>
-                    <input type="text" name="name" value={this.state.user.name} onChange={this.handleChange}/>
-                    <input type="text" name="email" value={this.state.user.email} onChange={this.handleChange}/>
-                    <button type="submit"> add name in parent component</button>
-                </form>
+
+                    <p>{this.props.user ? `Editing ${this.state.user.email} ${this.state.user.name}` : "Create new user"}</p>
+
+                    <form class="border border-primary" onSubmit={this.save}>
+                        <input type="hidden" value={this.state.user.id}/>
+                        <input type="text" name="name" value={this.state.user.name} onChange={this.handleChange}/>
+                        <input type="text" name="email" value={this.state.user.email} onChange={this.handleChange}/>
+                        <button type="submit"> add name in parent component</button>
+                    </form>
+
             </Fragment>
         );
     }
