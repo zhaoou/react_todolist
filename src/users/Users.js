@@ -5,16 +5,17 @@ import {Link, NavLink, Route} from "react-router-dom";
 import * as UserAPI from './UserAPI'
 
 
-
 let NavLinks = () => (
     <nav className="nav flex-column">
         <NavLink exact className="nav-link active" to="/user/create">Add</NavLink>
+
     </nav>
 )
 
 let Routes = (pr) => (
     <div>
-        <Route path="/user/create" render={(props) => <UserForm {...props} save={pr.add}/>}/>
+        <Route path="/user/create"   render={(props) => <UserForm {...props} save={pr.add}/>}/>
+        <Route path="/user/edit/:id" render={(props) => <UserForm {...props} save={pr.add}/>}/>
     </div>
 )
 
@@ -61,8 +62,7 @@ class Users extends Component {
                                     <Link to={`/user/edit/${e.id}`}>
                                         {e.name.toString()} {e.email}
                                     </Link>
-                                    <Route path="/user/edit/:id"
-                                           render={(props) => <UserForm {...props} save={this.add} user={e}/>}/>
+
                                 </li>
                             ))}
                         </ul>

@@ -13,10 +13,9 @@ const headers = {
     'Accept': 'application/json',
 }
 
-// export const get = (bookId) =>
-//     fetch(`${api}/books/${bookId}`, { headers })
-//         .then(res => res.json())
-//         .then(data => data.book)
+export const get = (userId) =>
+     fetch(`${api}/users/${userId}`, { headers })
+        .then(res => res.json())
 
 export const getAll = () =>
     fetch(`${api}/users`, { headers })

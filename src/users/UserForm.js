@@ -1,11 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import {withRouter} from "react-router-dom";
+import * as UserAPI from "./UserAPI";
 
 class UserForm extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {user: props.user || {id: Math.random() + "_", name: "", email: ""}};
+        this.state = { user: {id: Math.random() + "_", name: "", email: ""} };
         this.save = this.save.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -13,9 +14,9 @@ class UserForm extends Component {
     save(event) {
         event.preventDefault();
         this.props.save(this.state.user);
+        // TODO save in API
         event.currentTarget.reset();
     }
-
 
     handleChange(event) {
         let {name, value} = event.target;
@@ -26,6 +27,9 @@ class UserForm extends Component {
         });
     }
 
+    componentDidMount() {
+        UserAPI.get(this.props.match.params.id).then( (user) => { this.setState({ user }) } )
+    }
 
     render() {
         return (
