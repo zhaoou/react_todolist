@@ -1,16 +1,18 @@
 import {Link, NavLink, Route, Switch} from "react-router-dom";
 import React, {Component, Fragment} from 'react';
 import Todos from "./todos/Todos";
-import TodoDetails from "./todos/TodoDetails";
 import Users from "./users/Users";
 
 let About = (props) => (<h3> Abuot</h3>);
 
 let NotFound = () => (<h3> Dis dint find </h3>);
 
+let Home = () => (<h3> Home  </h3>);
+
 let NavLinks = () => (
     <nav className="nav flex-column">
         <NavLink exact className="nav-link" to="/">Home</NavLink>
+        <NavLink exact className="nav-link" to="/todo">Todos</NavLink>
         <NavLink exact className="nav-link" to="/user">Users</NavLink>
         <NavLink exact className="nav-link" to="/about">About</NavLink>
 
@@ -19,11 +21,11 @@ let NavLinks = () => (
 
 let Routes = () => (
     <Switch>
-        <Route exact path="/"   component={Todos}/>
+        <Route exact path="/"   component={Home}/>
+        <Route path="/todo"     component={Todos}/>
         <Route path="/about"    component={About}/>
-        <Route path="/todo/:id" component={TodoDetails}/>
         <Route path="/user"     component={Users}/>
-        <Route path="/:page"    component={NotFound}/>
+        {/*<Route path="/:page"    component={NotFound}/>*/}
     </Switch>
 )
 

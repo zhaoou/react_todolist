@@ -11,7 +11,7 @@ class Todo extends Component {
 
         // copy of the function will be bound permanently to the object, not prototype, and will be looked up first when called. shadowing.
         this.addName = this.addName.bind(this);
-        this.goToTodo = this.goToTodo.bind(this);
+       // this.goToTodo = this.goToTodo.bind(this);
     }
 
     // this function belongs to Todo.prototype
@@ -21,12 +21,13 @@ class Todo extends Component {
         event.currentTarget.reset();
     }
 
-    goToTodo(event) {
-        event.preventDefault();
-        this.props.history.push(`/todo/${this.props.name}`);
-    }
+    // goToTodo(event) {
+    //     event.preventDefault();
+    //     this.props.history.push(`/todo/${this.props.name}`);
+    // }
 
     componentDidMount() {
+        console.log("todoooooo componentDidMount")
         // console.log(this, "mounted");
     }
 
@@ -34,14 +35,16 @@ class Todo extends Component {
         return (
             <Fragment>
 
-                <h1> {this.props.name}</h1>
-
+                <h5>Title: {this.props.name}</h5>
+                <h5>UserId: {this.props.userId}</h5>
+                <h5>Completed: {this.props.completed}</h5>
                 {/*<form onSubmit={this.goToTodo}>*/}
                 {/*<button type="submit"> see todo </button>*/}
                 {/*</form>*/}
-                <Link to={`/todo/${this.props.name}`}>Details</Link>
 
-                <h3> change names in App</h3>
+                {/*<Link to={`/todo/${this.props.name}`}>Details</Link>*/}
+
+                {/*<h3> change names in App</h3>*/}
                 <form onSubmit={this.addName}>
                     <input type="text" ref={this.nameRef} name="name"/>
                     <button type="submit"> add name in parent component</button>

@@ -5,6 +5,7 @@ import * as UserAPI from "./UserAPI";
 class UserForm extends Component {
 
     constructor(props) {
+        console.log("constructor")
         super(props);
         this.state = { user: {id: Math.random() + "_", name: "", email: ""} };
         this.save = this.save.bind(this);
@@ -15,6 +16,8 @@ class UserForm extends Component {
         event.preventDefault();
         this.props.save(this.state.user);
         // TODO save in API
+        UserAPI.get(this.props.match.params.id).then( (user) => { this.setState({ user }) } )
+
         event.currentTarget.reset();
     }
 
@@ -29,6 +32,16 @@ class UserForm extends Component {
 
     componentDidMount() {
         UserAPI.get(this.props.match.params.id).then( (user) => { this.setState({ user }) } )
+        console.log("componentDidMount")
+    }
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        console.log("componentDidUpdate")
+        if (this.props.match.params.id !== prevProps.match.params.id) {
+            console.log("componentDidUpdate conditions")
+            UserAPI.get(this.props.match.params.id).then( (user) => { this.setState({ user }) } )
+        }
     }
 
     render() {
