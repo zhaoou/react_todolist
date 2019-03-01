@@ -15,10 +15,10 @@ class UserForm extends Component {
     save(event) {
         event.preventDefault();
         this.props.save(this.state.user);
-        // TODO save in API
-        UserAPI.get(this.props.match.params.id).then( (user) => { this.setState({ user }) } )
-
+        UserAPI.create(this.state.user);
         event.currentTarget.reset();
+        this.props.history.push("/user")
+
     }
 
     handleChange(event) {
@@ -49,7 +49,7 @@ class UserForm extends Component {
             <Fragment>
 
 
-                    <p>{this.props.user ? `Editing ${this.state.user.email} ${this.state.user.name}` : "Create new user"}</p>
+                    <p>{this.props.match.params.id ? `Editing ${this.state.user.email} ${this.state.user.name}` : "Create new user"}</p>
 
                     <form class="border border-primary" onSubmit={this.save}>
                         <input type="hidden" value={this.state.user.id}/>

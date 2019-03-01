@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Todo from './Todo';
+import Todo from './TodoForm';
 import * as TodoAPI from "../todos/TodoAPI";
 import {Link, NavLink, Route} from "react-router-dom";
 
@@ -21,23 +21,39 @@ class Todos extends Component {
 
     constructor(props) {
         super(props);
-        // this.state = {ray: ["Kill Bill", "Buy Milk"]};
-
-        this.state = {todos: [{title:"Kill Bill", userId:"0", completed:true}]};
-
+        this.state = {
+            todos: [{title:"Kill Bill", id:"", completed:true}],
+            found: [],
+            keyword   : ""
+        };
         this.add = this.add.bind(this);
+        this.handleTyping = this.handleTyping.bind(this);
     }
 
-    add(name) {
-        console.log("adding name in App")
-        // let oldNames = [...this.state.ray];
-        // oldNames.push(name);
-        // this.setState({ray: oldNames});
+    add({id = Math.random() + "_", title, completed=false}) {
+        console.log("adding todo in App", arguments)
+
+        let oldTodos = [...this.state.todos];
+        let modified =  oldTodos.filter(td => td.id == id)[0];
+        if(! modified){
+            modified = {id, title, completed};
+            oldTodos.push(modified);
+        }
+        modified.title = title;
+        modified.completed = completed
+        this.setState({todos: oldTodos});
     }
 
     componentDidMount() {
-        console.log("todos componentDidMount")
-        TodoAPI.getAll().then( (todos) => { this.setState({ todos }) } )
+        TodoAPI.getAll().then( (todos) => { this.setState({ todos: todos, found: todos }) } )
+    }
+
+    handleTyping(event) {
+        let input = event.target.value;
+        this.setState(old => {
+            let oldTodos = [...this.state.todos.filter( td => td.title.includes(input))];
+            return {todos: [...this.state.todos], keyword : input, found: oldTodos};
+        });
     }
 
     render() {
@@ -50,17 +66,16 @@ class Todos extends Component {
                 </div>
 
                 <div className="col">
-                    {/*{this.state.todos.map((e, i) => (*/}
-                        {/*<Todo key={i} name={e.title} userId={e.userId} completed={e.completed.toString()} add={this.add}/> //*/}
-                    {/*))}*/}
+
+                    <input type="text" name="search" value={this.state.keyword} onChange={this.handleTyping}/>
+
 
                     <ul>
-                        {this.state.todos.map((e) => (
+                        {this.state.found.map((e) => (
                             <li>
                                 <Link to={`/todo/edit/${e.id}`}>
-                                    {e.title.toString()}
+                                    {e.title}
                                 </Link>
-
                             </li>
                         ))}
                     </ul>

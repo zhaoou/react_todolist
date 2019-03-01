@@ -21,15 +21,15 @@ export const getAll = () =>
     fetch(`${api}/users`, { headers })
         .then(res => res.json())
 
-// export const update = (book, shelf) =>
-//     fetch(`${api}/books/${book.id}`, {
-//         method: 'PUT',
-//         headers: {
-//             ...headers,
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ shelf })
-//     }).then(res => res.json())
+export const create = (user) =>
+    fetch(`${api}/users/`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user })
+    }).then(res => res.json())
 //
 // export const search = (query) =>
 //     fetch(`${api}/search`, {
