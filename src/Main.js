@@ -11,15 +11,16 @@ let NotFound = () => (<h3> Dis dint find </h3>);
 let NavLinks = () => (
     <nav className="nav flex-column">
         <NavLink exact className="nav-link" to="/">Home</NavLink>
-        <NavLink exact className="nav-link" to="/about">About</NavLink>
         <NavLink exact className="nav-link" to="/user">Users</NavLink>
+        <NavLink exact className="nav-link" to="/about">About</NavLink>
+
     </nav>
 )
 
 let Routes = () => (
     <Switch>
-        <Route path="/about"    component={About}/>
         <Route exact path="/"   component={Todos}/>
+        <Route path="/about"    component={About}/>
         <Route path="/todo/:id" component={TodoDetails}/>
         <Route path="/user"     component={Users}/>
         <Route path="/:page"    component={NotFound}/>

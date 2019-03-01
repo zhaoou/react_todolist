@@ -2,6 +2,9 @@ import React, {Component, Fragment} from 'react';
 import UserForm from "./UserForm";
 import {Link, NavLink, Route} from "react-router-dom";
 
+import * as UserAPI from './UserAPI'
+
+
 
 let NavLinks = () => (
     <nav className="nav flex-column">
@@ -37,6 +40,10 @@ class Users extends Component {
         this.setState({users: oldUsers});
     }
 
+    componentDidMount() {
+        UserAPI.getAll().then( (users) => { this.setState({ users }) } )
+    }
+
     render() {
         return (
 
@@ -52,7 +59,7 @@ class Users extends Component {
                             {this.state.users.map((e) => (
                                 <li>
                                     <Link to={`/user/edit/${e.id}`}>
-                                        <b>{e.name.toString()} {e.email}</b>
+                                        {e.name.toString()} {e.email}
                                     </Link>
                                     <Route path="/user/edit/:id"
                                            render={(props) => <UserForm {...props} save={this.add} user={e}/>}/>
