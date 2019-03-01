@@ -28,6 +28,7 @@ class Todos extends Component {
         };
         this.add = this.add.bind(this);
         this.handleTyping = this.handleTyping.bind(this);
+        this.clearTyping = this.clearTyping.bind(this);
     }
 
     add({id = Math.random() + "_", title, completed=false}) {
@@ -56,6 +57,14 @@ class Todos extends Component {
         });
     }
 
+    clearTyping(){
+        this.setState(old => {
+            let oldTodos = [...this.state.todos];
+            return {todos: [...this.state.todos], keyword : "", found: oldTodos};
+        });
+    }
+
+
     render() {
         return (
 
@@ -67,7 +76,21 @@ class Todos extends Component {
 
                 <div className="col">
 
-                    <input type="text" name="search" value={this.state.keyword} onChange={this.handleTyping}/>
+
+                    <form>
+
+                        <div className="form-group row">
+
+                            <div className="col-sm-10">
+                                <input type="text" name="search" className="form-control" id="exampleInputEmail1" value={this.state.keyword} onChange={this.handleTyping} placeholder="Search tasks"/>
+                            </div>
+                            <div className="col-sm-2">
+                                <button type="button" className="btn btn-outline-primary" onClick={this.clearTyping}>Clear</button>
+                            </div>
+                        </div>
+
+                    </form>
+
 
 
                     <ul>
