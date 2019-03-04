@@ -70,7 +70,7 @@ class Users extends Component {
                             {this.state.found.map((e) => (
                                 <li>
                                     <Link to={`/user/edit/${e.id}`}>
-                                        {e.name.toString()} {" "}  {e.email}
+                                        {e.name.toString()} {"--"}  {e.email}
                                     </Link>
 
                                 </li>

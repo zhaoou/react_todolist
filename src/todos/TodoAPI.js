@@ -1,7 +1,7 @@
 
-const api = "https://jsonplaceholder.typicode.com"
+// const api = "https://jsonplaceholder.typicode.com"
 
-
+const api = "http://localhost:8080"
 
 
 // Generate a unique token for storing your bookshelf data on the backend server.
@@ -14,11 +14,11 @@ const headers = {
 }
 
 export const get = (id) =>
-     fetch(`${api}/todos/${id}`, { headers })
+     fetch(`${api}/todo/${id}`, { headers })
         .then(res => res.json())
 
 export const getAll = () =>
-    fetch(`${api}/todos`, { headers })
+    fetch(`${api}/todo`, { headers })
         .then(res => res.json())
 
 // export const update = (book, shelf) =>
