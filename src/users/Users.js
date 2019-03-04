@@ -24,22 +24,35 @@ class Users extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {users: [{id: Math.random() + "_", email: "zhaoouzhao@aliyun.com", name: "michael"}], keyword:"", found:[]};
+        let defaultState = {users: [{id: "", email: "", name: ""}], keyword:"", found:[]};
+        this.state = defaultState;
         this.add = this.add.bind(this)
         this.handleTyping = this.handleTyping.bind(this);
     }
 
-    add({id = Math.random() + "_", name, email}) {
-        console.log(name, email);
-        let oldUsers = [...this.state.users];
-        let existingUsers = this.state.users.filter(x => x.id == id);
-        if (existingUsers[0]) {
-            existingUsers[0].name = name;
-            existingUsers[0].email = email;
-        } else {
-            oldUsers.push({id: id, name: name, email: email});
+    add({id, name, email}) {
+        if(id){// update
+            UserAPI.update({id, name, email});
+            let oldUsers = [...this.state.users];
+
+            let existingUsers = this.state.users.filter(x => x.id == id);
+            if (existingUsers[0]) {
+                existingUsers[0].name = name;
+                existingUsers[0].email = email;
+            };
+            this.setState({users: oldUsers});
+
+        }else{// create
+            UserAPI.create({name, email}).then(user => {
+                let oldUsers = [...this.state.users];
+                oldUsers.push(user);
+                this.setState({users: oldUsers});
+
+            })
         }
-        this.setState({users: oldUsers});
+
+
+        // UserAPI.getAll().then( (users) => { this.setState({ users: users, found:users }) } )
     }
 
     handleTyping(event) {
@@ -53,6 +66,7 @@ class Users extends Component {
     componentDidMount() {
         UserAPI.getAll().then( (users) => { this.setState({ users: users, found:users }) } )
     }
+
 
     render() {
         return (
@@ -68,9 +82,9 @@ class Users extends Component {
                         <input type="text" name="search" value = {this.state.keyword} onChange={this.handleTyping}/>
                         <ul>
                             {this.state.found.map((e) => (
-                                <li>
+                                <li key={e.id}>
                                     <Link to={`/user/edit/${e.id}`}>
-                                        {e.name.toString()} {"--"}  {e.email}
+                                        {e.name} {"-"}  {e.email}
                                     </Link>
 
                                 </li>

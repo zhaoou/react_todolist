@@ -1,7 +1,4 @@
-
-const api = "https://jsonplaceholder.typicode.com"
-
-
+const api = "http://localhost:8080/"
 
 
 // Generate a unique token for storing your bookshelf data on the backend server.
@@ -14,23 +11,36 @@ const headers = {
 }
 
 export const get = (userId) =>
-     fetch(`${api}/users/${userId}`, { headers })
+    fetch(`${api}user/${userId}`, {headers})
         .then(res => res.json())
 
 export const getAll = () =>
-    fetch(`${api}/users`, { headers })
+    fetch(`${api}user`, {headers})
         .then(res => res.json())
 
 export const create = (user) =>
-    fetch(`${api}/users/`, {
+    fetch(`${api}user`, {
         method: 'POST',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ user })
+        body: JSON.stringify(user)
     }).then(res => res.json())
-//
+
+
+export const update = (user) => {
+    console.log("updating: ", user)
+    fetch(`${api}user/${user.id}`, {
+        method: 'PUT',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    }).then(res => res.json())
+}
+
 // export const search = (query) =>
 //     fetch(`${api}/search`, {
 //         method: 'POST',
