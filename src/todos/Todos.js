@@ -137,7 +137,7 @@ class Todos extends Component {
                 </div>
 
 
-                <div className="col border border-success">
+                <div className="col border-left border-top border-success">
                     <Routes add={this.add} delete={this.delete}/>
                 </div>
             </div>

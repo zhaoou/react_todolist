@@ -130,7 +130,7 @@ class Users extends Component {
                         </ul>
                     </div>
 
-                    <div className="col  border border-primary">
+                    <div className="col  border-left border-top border-primary">
                         <Routes add={this.add} del={this.delete}/>
                     </div>
                 </div>

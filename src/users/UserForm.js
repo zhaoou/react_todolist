@@ -58,7 +58,7 @@ class UserForm extends Component {
             <Fragment>
                 <p>{this.props.match.params.id ? `Editing ${this.state.user.email} ${this.state.user.name}` : "Create new user"}</p>
 
-                <form className="border border-primary" onSubmit={this.save}>
+                <form onSubmit={this.save}>
                     <input type="hidden" value={this.state.user.id}/>
                     <input type="text" name="name" value={this.state.user.name} onChange={this.handleChange}/>
                     <input type="text" name="email" value={this.state.user.email} onChange={this.handleChange}/>
