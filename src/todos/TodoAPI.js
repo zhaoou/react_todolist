@@ -33,7 +33,7 @@ export const create = (todo) =>
 
 export const update = (todo) =>
     fetch(`${api}/todo`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
