@@ -106,7 +106,7 @@ class Todos extends Component {
                     <NavLinks/>
                 </div>
 
-                <div className="col border-left border-bottom border-success">
+                <div className="col border-left  border-success">
 
 
                     <form>
@@ -137,7 +137,7 @@ class Todos extends Component {
                 </div>
 
 
-                <div className="col border-left border-top border-success">
+                <div className="col border-left border-success">
                     <Routes add={this.add} delete={this.delete}/>
                 </div>
             </div>

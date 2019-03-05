@@ -92,30 +92,21 @@ class Users extends Component {
                         <NavLinks/>
                     </div>
 
-                    <div className="col border-left border-bottom border-primary">
-
+                    <div className="col-6 border-left border-primary">
 
                         <form>
 
-                            <div className="form-group row">
+                            <div className="input-group mb-3">
 
-                                <div className="col-sm-10">
-                                    {/*<input type="text" name="search" value = {this.state.keyword} onChange={this.handleTyping}/>*/}
-                                    <input type="text" name="search" className="form-control" id="exampleInputEmail1" value={this.state.keyword} onChange={this.handleTyping} placeholder="Search users"/>
-
+                                <div className="input-group-prepend">
+                                    <button type="button" className="btn btn-outline-primary"  id="button-addon1" onClick={this.clearTyping}>Clear</button>
                                 </div>
+                                <input type="text" name="search" className="form-control" id="exampleInputEmail1" value={this.state.keyword} onChange={this.handleTyping} placeholder="Search users" aria-describedby="button-addon1"/>
 
-                                <div className="col-sm-2">
-                                    <button type="button" className="btn btn-outline-primary" onClick={this.clearTyping}>Clear</button>
-                                </div>
+
                             </div>
+
                         </form>
-
-
-
-
-
-
 
 
                         <ul>
@@ -130,7 +121,7 @@ class Users extends Component {
                         </ul>
                     </div>
 
-                    <div className="col  border-left border-top border-primary">
+                    <div className="col  border-left border-primary">
                         <Routes add={this.add} del={this.delete}/>
                     </div>
                 </div>
