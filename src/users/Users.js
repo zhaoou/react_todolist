@@ -8,14 +8,13 @@ import * as UserAPI from './UserAPI'
 let NavLinks = () => (
     <nav className="nav flex-column">
         <NavLink exact className="nav-link active" to="/user/create">Add</NavLink>
-
     </nav>
 )
 
 let Routes = (pr) => (
     <div>
-        <Route path="/user/create"   render={(props) => <UserForm {...props} save={pr.add}/>}/>
-        <Route path="/user/edit/:id" render={(props) => <UserForm {...props} save={pr.add}/>}/>
+        <Route path="/user/create"   render={(props) => <UserForm {...props} save={pr.add} del={pr.del}/>}/>
+        <Route path="/user/edit/:id" render={(props) => <UserForm {...props} save={pr.add} del={pr.del}/>}/>
     </div>
 )
 
@@ -24,35 +23,42 @@ class Users extends Component {
 
     constructor(props) {
         super(props);
-        let defaultState = {users: [{id: "", email: "", name: ""}], keyword:"", found:[]};
-        this.state = defaultState;
-        this.add = this.add.bind(this)
+
+        this.state = {users: [{id: "", email: "", name: ""}], keyword:"", found:[]};
+
+        this.add = this.add.bind(this);
+        this.delete = this.delete.bind(this);
         this.handleTyping = this.handleTyping.bind(this);
     }
 
     add({id, name, email}) {
+
         if(id){// update
             UserAPI.update({id, name, email});
             let oldUsers = [...this.state.users];
-
             let existingUsers = this.state.users.filter(x => x.id == id);
             if (existingUsers[0]) {
                 existingUsers[0].name = name;
                 existingUsers[0].email = email;
             };
-            this.setState({users: oldUsers});
+            this.setState({users: oldUsers, found: oldUsers});
 
         }else{// create
             UserAPI.create({name, email}).then(user => {
                 let oldUsers = [...this.state.users];
                 oldUsers.push(user);
-                this.setState({users: oldUsers});
+                this.setState({users: oldUsers, found: oldUsers});
 
             })
         }
 
+    }
 
-        // UserAPI.getAll().then( (users) => { this.setState({ users: users, found:users }) } )
+    delete(id){
+        let oldUsers = [...this.state.users].filter(u => u.id != id);
+        console.log(oldUsers);
+        UserAPI.remove(id);
+        this.setState({users: oldUsers, found: oldUsers});
     }
 
     handleTyping(event) {
@@ -93,7 +99,7 @@ class Users extends Component {
                     </div>
 
                     <div className="col">
-                        <Routes add={this.add}/>
+                        <Routes add={this.add} del={this.delete}/>
                     </div>
                 </div>
             </Fragment>
