@@ -12,9 +12,9 @@ class UserForm extends Component {
         this.delete = this.delete.bind(this);
     }
 
-    delete(event){
+    delete(event) {
         event.preventDefault();
-        if(this.state.user.id) this.props.del(this.state.user.id);
+        if (this.state.user.id) this.props.del(this.state.user.id);
         this.props.history.push("/user")
     }
 
@@ -53,8 +53,9 @@ class UserForm extends Component {
 
     render() {
         return (
-            <Fragment>
 
+
+            <Fragment>
                 <p>{this.props.match.params.id ? `Editing ${this.state.user.email} ${this.state.user.name}` : "Create new user"}</p>
 
                 <form className="border border-primary" onSubmit={this.save}>
@@ -66,10 +67,10 @@ class UserForm extends Component {
 
 
                 <form onSubmit={this.delete}>
-                    <button type="submit" >delete</button>
+                    <button type="submit">delete</button>
                 </form>
-
             </Fragment>
+
         );
     }
 }

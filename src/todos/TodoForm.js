@@ -12,7 +12,6 @@ class TodoForm extends Component {
         this.save = this.save.bind(this);
         this.delete = this.delete.bind(this);
         this.handleChange = this.handleChange.bind(this);
-
     }
 
     save(event) {
@@ -85,7 +84,6 @@ class TodoForm extends Component {
                     <button type="submit">delete</button>
                 </form>
 
-                <hr/>
             </Fragment>
         );
     }

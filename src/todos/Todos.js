@@ -78,11 +78,11 @@ class Todos extends Component {
 
             <div className="row">
 
-                <div className="col-1 border-top border-primary">
+                <div className="col-1 border-top border-success">
                     <NavLinks/>
                 </div>
 
-                <div className="col">
+                <div className="col border-left border-bottom border-success">
 
 
                     <form>
@@ -113,7 +113,7 @@ class Todos extends Component {
                 </div>
 
 
-                <div className="col">
+                <div className="col border border-success">
                     <Routes add={this.add} delete={this.delete}/>
                 </div>
             </div>

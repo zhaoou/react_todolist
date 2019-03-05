@@ -7,7 +7,7 @@ import * as UserAPI from './UserAPI'
 
 let NavLinks = () => (
     <nav className="nav flex-column">
-        <NavLink exact className="nav-link active" to="/user/create">Add</NavLink>
+        <NavLink exact activeClassName="disabled" className="nav-link" to="/user/create">Add</NavLink>
     </nav>
 )
 
@@ -72,8 +72,8 @@ class Users extends Component {
 
     clearTyping(){
         this.setState(old => {
-            let oldTodos = [...this.state.todos];
-            return {todos: [...this.state.todos], keyword : "", found: oldTodos};
+            let oldUsers = [...this.state.users];
+            return {users: oldUsers, keyword : "", found: oldUsers};
         });
     }
 
@@ -92,7 +92,7 @@ class Users extends Component {
                         <NavLinks/>
                     </div>
 
-                    <div className="col">
+                    <div className="col border-left border-bottom border-primary">
 
 
                         <form>
@@ -130,7 +130,7 @@ class Users extends Component {
                         </ul>
                     </div>
 
-                    <div className="col">
+                    <div className="col  border border-primary">
                         <Routes add={this.add} del={this.delete}/>
                     </div>
                 </div>
