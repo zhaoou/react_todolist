@@ -103,7 +103,7 @@ class Todos extends Component {
 
                     <ul>
                         {this.state.found.map((e) => (
-                            <li>
+                            <li key={e.id}>
                                 <Link to={`/todo/edit/${e.id}`}>
                                     {e.task}
                                 </Link>
