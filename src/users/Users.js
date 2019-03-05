@@ -31,25 +31,25 @@ class Users extends Component {
     }
 
     add({id, name, email}) {
+        let oldUsers = [...this.state.users];
+
         if(id){// update
             UserAPI.update({id, name, email});
-            let oldUsers = [...this.state.users];
 
             let existingUsers = this.state.users.filter(x => x.id == id);
             if (existingUsers[0]) {
                 existingUsers[0].name = name;
                 existingUsers[0].email = email;
             };
-            this.setState({users: oldUsers});
+
 
         }else{// create
             UserAPI.create({name, email}).then(user => {
-                let oldUsers = [...this.state.users];
                 oldUsers.push(user);
-                this.setState({users: oldUsers});
-
             })
         }
+
+        this.setState({users: oldUsers});
 
 
         // UserAPI.getAll().then( (users) => { this.setState({ users: users, found:users }) } )
