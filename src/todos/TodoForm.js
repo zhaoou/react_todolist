@@ -33,8 +33,8 @@ class TodoForm extends Component {
 
     delete(event) {
         event.preventDefault();
-        TodoAPI.del(this.state.todo.id).then( () => {this.props.delete(this.state.todo.id) } );
-        //this.props.delete(this.state.todo.id);
+        TodoAPI.del(this.state.todo.id);//.then( () => {this.props.delete(this.state.todo.id) } );
+        this.props.delete(this.state.todo.id);
         event.currentTarget.reset();
         this.props.history.push("/todo");
 

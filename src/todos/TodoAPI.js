@@ -42,6 +42,16 @@ export const update = (todo) =>
     }).then(res => res.json())
 
 
-export const del = (id) =>
-    fetch(`${api}/todo/delete/${id}`, { headers })
-        .then()
+// export const del = (id) =>
+//     fetch(`${api}/todo/delete/${id}`, { headers })
+//         .then()
+
+export const del = (id) => {
+    fetch(`${api}/todo/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    })
+}
