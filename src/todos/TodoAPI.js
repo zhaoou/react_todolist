@@ -31,8 +31,19 @@ export const create = (todo) =>
         body: JSON.stringify(todo)
     }).then(res => res.json())
 
-export const update = (todo) =>
-    fetch(`${api}/todo`, {
+//
+// export const update = (todo) =>
+//     fetch(`${api}/todo`, {
+//         method: 'PUT',
+//         headers: {
+//             ...headers,
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(todo)
+//     }).then(res => res.json())
+
+export const update = (todo) => {
+    fetch(`${api}/todo/${todo.id}`, {
         method: 'PUT',
         headers: {
             ...headers,
@@ -40,6 +51,8 @@ export const update = (todo) =>
         },
         body: JSON.stringify(todo)
     }).then(res => res.json())
+}
+
 
 
 // export const del = (id) =>
