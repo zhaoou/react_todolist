@@ -16,13 +16,17 @@ class TodoForm extends Component {
 
     save(event) {
         event.preventDefault();
-        if(this.state.todo.id){//update
-            //TodoAPI.create(this.state.todo).then( (todo) => {this.setState(todo) } );
-            TodoAPI.create(this.state.todo).then( (todo) => {this.props.save(todo) } );
-        }
-        else{//create
-            TodoAPI.create({task:this.state.todo.task}).then( (todo) => { this.props.save(todo)} );
-        }
+
+        this.props.save(this.state.todo);
+
+        // if(this.state.todo.id){//update
+        //     //TodoAPI.update(this.state.todo).then( (todo) => {this.props.save(todo) } );
+        //     TodoAPI.update(this.state.todo).then( (todo) => {this.props.save(todo) } );
+        //     // this.props.save(todo)
+        // }
+        // else{//create
+        //     TodoAPI.create({task:this.state.todo.task}).then( (todo) => { this.props.save(todo)} );
+        // }
 
         //this.props.save(this.state.todo);
         event.currentTarget.reset();

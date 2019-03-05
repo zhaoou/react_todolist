@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Todo from './TodoForm';
 import * as TodoAPI from "../todos/TodoAPI";
 import {Link, NavLink, Route} from "react-router-dom";
+import * as UserAPI from "../users/UserAPI";
 
 let NavLinks = () => (
     <nav className="nav flex-column">
@@ -32,18 +33,41 @@ class Todos extends Component {
         this.clearTyping = this.clearTyping.bind(this);
     }
 
-    add({id = Math.random() + "_", task, complete=false}) {
-        console.log("adding todo in App", arguments)
+    // add({id = Math.random() + "_", task, complete=false}) {
+    //     console.log("adding todo in App", arguments)
+    //
+    //     let oldTodos = [...this.state.todos];
+    //     let modified =  oldTodos.filter(td => td.id == id)[0];
+    //     if(! modified){
+    //         modified = {id, task, complete};
+    //         oldTodos.push(modified);
+    //     }
+    //     modified.task = task;
+    //     modified.complete = complete;
+    //     this.setState({todos: oldTodos, found: oldTodos});
+    // }
 
-        let oldTodos = [...this.state.todos];
-        let modified =  oldTodos.filter(td => td.id == id)[0];
-        if(! modified){
-            modified = {id, task, complete};
-            oldTodos.push(modified);
+    add({id, task, complete}) {
+
+        if(id){// update
+            TodoAPI.update({id, task, complete});
+            let oldTodos = [...this.state.todos];
+            let existingTodos = this.state.todos.filter(x => x.id == id);
+            if (existingTodos[0]) {
+                existingTodos[0].task = task;
+                existingTodos[0].complete = complete;
+            };
+            this.setState({todos: oldTodos, found: oldTodos});
+
+        }else{// create
+            TodoAPI.create({task, complete}).then(todo => {
+                let oldTodos = [...this.state.todos];
+                oldTodos.push(todo);
+                this.setState({todos: oldTodos, found: oldTodos});
+
+            })
         }
-        modified.task = task;
-        modified.complete = complete;
-        this.setState({todos: oldTodos, found: oldTodos});
+
     }
 
     delete(id) {
