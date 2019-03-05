@@ -41,6 +41,19 @@ export const update = (user) => {
     }).then(res => res.json())
 }
 
+
+export const remove = (userId) => {
+    fetch(`${api}user/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
+
+
 // export const search = (query) =>
 //     fetch(`${api}/search`, {
 //         method: 'POST',
