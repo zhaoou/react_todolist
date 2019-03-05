@@ -21,23 +21,27 @@ export const getAll = () =>
     fetch(`${api}/todo`, { headers })
         .then(res => res.json())
 
-// export const update = (book, shelf) =>
-//     fetch(`${api}/books/${book.id}`, {
-//         method: 'PUT',
-//         headers: {
-//             ...headers,
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ shelf })
-//     }).then(res => res.json())
-//
-// export const search = (query) =>
-//     fetch(`${api}/search`, {
-//         method: 'POST',
-//         headers: {
-//             ...headers,
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ query })
-//     }).then(res => res.json())
-//         .then(data => data.books)
+export const create = (todo) =>
+    fetch(`${api}/todo`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todo)
+    }).then(res => res.json())
+
+export const update = (todo) =>
+    fetch(`${api}/todo`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todo)
+    }).then(res => res.json())
+
+
+export const del = (id) =>
+    fetch(`${api}/todo/delete/${id}`, { headers })
+        .then()

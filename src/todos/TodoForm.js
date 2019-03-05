@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import * as TodoAPI from "../todos/TodoAPI";
-import * as UserAPI from "../users/UserAPI";
 
 
 class TodoForm extends Component {
@@ -9,17 +8,36 @@ class TodoForm extends Component {
     constructor(props) {
         super(props);
         console.log(props)
-        this.state = {todo      : {title:"", id:"", completed:false}};
+        this.state = {todo      : {task:"", id:"", complete:false}};
         this.save = this.save.bind(this);
+        this.delete = this.delete.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
     }
 
     save(event) {
         event.preventDefault();
-        this.props.save(this.state.todo);
+        if(this.state.todo.id){//update
+            //TodoAPI.create(this.state.todo).then( (todo) => {this.setState(todo) } );
+            TodoAPI.create(this.state.todo).then( (todo) => {this.props.save(todo) } );
+        }
+        else{//create
+            TodoAPI.create({task:this.state.todo.task}).then( (todo) => { this.props.save(todo)} );
+        }
+
+        //this.props.save(this.state.todo);
         event.currentTarget.reset();
-        this.props.history.push("/todo")
+        this.props.history.push("/todo");
+
+    }
+
+    delete(event) {
+        event.preventDefault();
+        TodoAPI.del(this.state.todo.id).then( () => {this.props.delete(this.state.todo.id) } );
+        //this.props.delete(this.state.todo.id);
+        event.currentTarget.reset();
+        this.props.history.push("/todo");
+
     }
 
 
@@ -27,7 +45,7 @@ class TodoForm extends Component {
         let input = event.target.value;
         this.setState(old => {
             let newTodo = {...old.todo};
-            newTodo.title = input;
+            newTodo.task = input;
             return {todo: newTodo};
         });
     }
@@ -48,18 +66,23 @@ class TodoForm extends Component {
         return (
             <Fragment>
 
-                <h5>Title: {this.state.todo.title}</h5>
+                <h5>Title: {this.state.todo.task}</h5>
                 <h5>UserId: {this.state.todo.id}</h5>
-                <h5>Completed: {this.state.todo.completed}</h5>
+                <h5>Completed: {this.state.todo.complete}</h5>
 
 
-                <p>{this.props.match.params.id ? `Editing ${this.state.todo.title} ${this.state.todo.completed}` : "Create new todo"}</p>
+                <p>{this.props.match.params.id ? `Editing ${this.state.todo.task} ${this.state.todo.complete}` : "Create new todo"}</p>
 
-                <form className="border border-primary" onSubmit={this.save}>
+                <form  onSubmit={this.save}>
                     <input type="hidden" value={this.state.todo.id}/>
-                    <input type="text" name="name" value={this.state.todo.title} onChange={this.handleChange}/>
+                    <input type="text" name="name" value={this.state.todo.task} onChange={this.handleChange}/>
                     {/*<input type="text" name="email" value={this.state.todo.email} onChange={this.handleChange}/>*/}
+                    <br/>
                     <button type="submit">save modifications</button>
+                </form>
+
+                <form  onSubmit={this.delete}>
+                    <button type="submit">delete</button>
                 </form>
 
                 <hr/>

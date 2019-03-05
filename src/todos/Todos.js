@@ -13,7 +13,7 @@ let NavLinks = () => (
 let Routes = (pr) => (
     <div>
         <Route path="/todo/create"   render={(props) => <Todo {...props} save={pr.add}/>}/>
-        <Route path="/todo/edit/:id" render={(props) => <Todo {...props} save={pr.add}/>}/>
+        <Route path="/todo/edit/:id" render={(props) => <Todo {...props} save={pr.add} delete={pr.delete}/>}/>
     </div>
 )
 
@@ -22,27 +22,35 @@ class Todos extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos: [{title:"Kill Bill", id:"", completed:true}],
+            todos: [{task:"Kill Bill", id:"", complete:true}],
             found: [],
             keyword   : ""
         };
         this.add = this.add.bind(this);
+        this.delete = this.delete.bind(this);
         this.handleTyping = this.handleTyping.bind(this);
         this.clearTyping = this.clearTyping.bind(this);
     }
 
-    add({id = Math.random() + "_", title, completed=false}) {
+    add({id = Math.random() + "_", task, complete=false}) {
         console.log("adding todo in App", arguments)
 
         let oldTodos = [...this.state.todos];
         let modified =  oldTodos.filter(td => td.id == id)[0];
         if(! modified){
-            modified = {id, title, completed};
+            modified = {id, task, complete};
             oldTodos.push(modified);
         }
-        modified.title = title;
-        modified.completed = completed
-        this.setState({todos: oldTodos});
+        modified.task = task;
+        modified.complete = complete;
+        this.setState({todos: oldTodos, found: oldTodos});
+    }
+
+    delete(id) {
+        console.log("delete todo in App:",this.state.todos)
+        let oldTodos = [...this.state.todos];
+        let leftTodos =  oldTodos.filter(td => td.id != id);
+        this.setState({todos: leftTodos, found: leftTodos});
     }
 
     componentDidMount() {
@@ -52,7 +60,7 @@ class Todos extends Component {
     handleTyping(event) {
         let input = event.target.value;
         this.setState(old => {
-            let oldTodos = [...this.state.todos.filter( td => td.title.includes(input))];
+            let oldTodos = [...this.state.todos.filter( td => td.task.includes(input))];
             return {todos: [...this.state.todos], keyword : input, found: oldTodos};
         });
     }
@@ -97,7 +105,7 @@ class Todos extends Component {
                         {this.state.found.map((e) => (
                             <li>
                                 <Link to={`/todo/edit/${e.id}`}>
-                                    {e.title}
+                                    {e.task}
                                 </Link>
                             </li>
                         ))}
@@ -106,7 +114,7 @@ class Todos extends Component {
 
 
                 <div className="col">
-                    <Routes add={this.add}/>
+                    <Routes add={this.add} delete={this.delete}/>
                 </div>
             </div>
 
