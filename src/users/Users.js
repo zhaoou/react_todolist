@@ -25,10 +25,11 @@ class Users extends Component {
         super(props);
 
         this.state = {users: [{id: "", email: "", name: ""}], keyword:"", found:[]};
-
         this.add = this.add.bind(this);
         this.delete = this.delete.bind(this);
         this.handleTyping = this.handleTyping.bind(this);
+        this.clearTyping = this.clearTyping.bind(this);
+
     }
 
     add({id, name, email}) {
@@ -69,6 +70,13 @@ class Users extends Component {
         });
     }
 
+    clearTyping(){
+        this.setState(old => {
+            let oldTodos = [...this.state.todos];
+            return {todos: [...this.state.todos], keyword : "", found: oldTodos};
+        });
+    }
+
     componentDidMount() {
         UserAPI.getAll().then( (users) => { this.setState({ users: users, found:users }) } )
     }
@@ -85,7 +93,31 @@ class Users extends Component {
                     </div>
 
                     <div className="col">
-                        <input type="text" name="search" value = {this.state.keyword} onChange={this.handleTyping}/>
+
+
+                        <form>
+
+                            <div className="form-group row">
+
+                                <div className="col-sm-10">
+                                    {/*<input type="text" name="search" value = {this.state.keyword} onChange={this.handleTyping}/>*/}
+                                    <input type="text" name="search" className="form-control" id="exampleInputEmail1" value={this.state.keyword} onChange={this.handleTyping} placeholder="Search users"/>
+
+                                </div>
+
+                                <div className="col-sm-2">
+                                    <button type="button" className="btn btn-outline-primary" onClick={this.clearTyping}>Clear</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+
+
+
+
+
+
                         <ul>
                             {this.state.found.map((e) => (
                                 <li key={e.id}>

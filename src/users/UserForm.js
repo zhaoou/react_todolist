@@ -66,7 +66,7 @@ class UserForm extends Component {
 
 
                 <form onSubmit={this.delete}>
-                    <button type="submit">delete</button>
+                    <button type="submit" >delete</button>
                 </form>
 
             </Fragment>
