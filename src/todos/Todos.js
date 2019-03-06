@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import Todo from './TodoForm';
+import TodoForm from './TodoForm';
 import * as TodoAPI from "../todos/TodoAPI";
 import {Link, NavLink, Route} from "react-router-dom";
-import * as UserAPI from "../users/UserAPI";
 
 let NavLinks = () => (
     <nav className="nav flex-column">
@@ -13,8 +12,8 @@ let NavLinks = () => (
 
 let Routes = (pr) => (
     <div>
-        <Route path="/todo/create"   render={(props) => <Todo {...props} save={pr.add}/>}/>
-        <Route path="/todo/edit/:id" render={(props) => <Todo {...props} save={pr.add} delete={pr.delete}/>}/>
+        <Route path="/todo/create"   render={(props) => <TodoForm {...props} save={pr.add} del={pr.del}/>}/>
+        <Route path="/todo/edit/:id" render={(props) => <TodoForm {...props} save={pr.add} del={pr.del}/>}/>
     </div>
 )
 
@@ -33,19 +32,6 @@ class Todos extends Component {
         this.clearTyping = this.clearTyping.bind(this);
     }
 
-    // add({id = Math.random() + "_", task, complete=false}) {
-    //     console.log("adding todo in App", arguments)
-    //
-    //     let oldTodos = [...this.state.todos];
-    //     let modified =  oldTodos.filter(td => td.id == id)[0];
-    //     if(! modified){
-    //         modified = {id, task, complete};
-    //         oldTodos.push(modified);
-    //     }
-    //     modified.task = task;
-    //     modified.complete = complete;
-    //     this.setState({todos: oldTodos, found: oldTodos});
-    // }
 
     add({id, task, complete}) {
 
@@ -71,10 +57,9 @@ class Todos extends Component {
     }
 
     delete(id) {
-        console.log("delete todo in App:",this.state.todos)
-        let oldTodos = [...this.state.todos];
-        let leftTodos =  oldTodos.filter(td => td.id != id);
-        this.setState({todos: leftTodos, found: leftTodos});
+        let oldTodos = [...this.state.todos].filter(td => td.id != id);
+        TodoAPI.remove(id);
+        this.setState({todos: oldTodos, found: oldTodos});
     }
 
     componentDidMount() {
@@ -138,7 +123,7 @@ class Todos extends Component {
 
 
                 <div className="col border-left border-success">
-                    <Routes add={this.add} delete={this.delete}/>
+                    <Routes add={this.add} del={this.delete}/>
                 </div>
             </div>
 
