@@ -33,7 +33,6 @@ class Users extends Component {
     }
 
     add({id, name, email}) {
-
         if(id){// update
             UserAPI.update({id, name, email});
             let oldUsers = [...this.state.users];
@@ -49,10 +48,8 @@ class Users extends Component {
                 let oldUsers = [...this.state.users];
                 oldUsers.push(user);
                 this.setState({users: oldUsers, found: oldUsers});
-
             })
         }
-
     }
 
     delete(id){

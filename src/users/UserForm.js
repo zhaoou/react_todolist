@@ -54,21 +54,46 @@ class UserForm extends Component {
     render() {
         return (
 
-
             <Fragment>
-                <p>{this.props.match.params.id ? `Editing ${this.state.user.email} ${this.state.user.name}` : "Create new user"}</p>
+
+                <h1> {this.props.match.params.id ? `Editing` : `Creating`}</h1>
+
+                <p> {`${this.state.user.name} (${this.state.user.email})`} </p>
+
 
                 <form onSubmit={this.save}>
+
                     <input type="hidden" value={this.state.user.id}/>
-                    <input type="text" name="name" value={this.state.user.name} onChange={this.handleChange}/>
-                    <input type="text" name="email" value={this.state.user.email} onChange={this.handleChange}/>
-                    <button type="submit"> add name in parent component</button>
+
+                    <div className="form-group">
+                        <label htmlFor="userName">Name</label>
+                        <input id="userName"
+                               className="form-control"
+                               type="text"
+                               name="name"
+                               value={this.state.user.name}
+                               onChange={this.handleChange}
+                               placeholder="Enter full name"/>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="userEmail">Email address</label>
+                        <input type="text"
+                               className="form-control"
+                               id="userEmail"
+                               name="email"
+                               value={this.state.user.email}
+                               onChange={this.handleChange}
+                               placeholder="Enter email"/>
+                    </div>
+
+                    <button type="submit" className="btn btn-primary">Save changes</button>
+                    {this.props.match.params.id ?
+                        <button type="submit" className="btn btn-danger" onClick={this.delete}>Delete User</button>
+                        : "" }
                 </form>
 
 
-                <form onSubmit={this.delete}>
-                    <button type="submit">delete</button>
-                </form>
             </Fragment>
 
         );
