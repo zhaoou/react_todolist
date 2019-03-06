@@ -2,18 +2,18 @@ import React, {Component} from 'react';
 import TodoForm from './TodoForm';
 import * as TodoAPI from "../todos/TodoAPI";
 import {Link, NavLink, Route} from "react-router-dom";
+import * as UserAPI from "../users/UserAPI";
 
 let NavLinks = () => (
     <nav className="nav flex-column">
         <NavLink exact className="nav-link active" to="/todo/create">Add</NavLink>
-
     </nav>
 )
 
 let Routes = (pr) => (
     <div>
-        <Route path="/todo/create"   render={(props) => <TodoForm {...props} save={pr.add} del={pr.del}/>}/>
-        <Route path="/todo/edit/:id" render={(props) => <TodoForm {...props} save={pr.add} del={pr.del}/>}/>
+        <Route path="/todo/create"   render={(props) => <TodoForm {...props} save={pr.add} del={pr.del} users={pr.users}/>}/>
+        <Route path="/todo/edit/:id" render={(props) => <TodoForm {...props} save={pr.add} del={pr.del} users={pr.users}/>}/>
     </div>
 )
 
@@ -24,7 +24,8 @@ class Todos extends Component {
         this.state = {
             todos: [{task:"Kill Bill", id:"", complete:true}],
             found: [],
-            keyword   : ""
+            keyword   : "",
+            users: []
         };
         this.add = this.add.bind(this);
         this.delete = this.delete.bind(this);
@@ -33,15 +34,16 @@ class Todos extends Component {
     }
 
 
-    add({id, task, complete}) {
-
+    add({id, task, complete, userId}) {
+        console.log(userId)
         if(id){// update
-            TodoAPI.update({id, task, complete});
+            TodoAPI.update({id, task, complete, userId});
             let oldTodos = [...this.state.todos];
             let existingTodos = this.state.todos.filter(x => x.id == id);
             if (existingTodos[0]) {
                 existingTodos[0].task = task;
                 existingTodos[0].complete = complete;
+                existingTodos[0].userId = userId;
             };
             this.setState({todos: oldTodos, found: oldTodos});
 
@@ -53,7 +55,6 @@ class Todos extends Component {
 
             })
         }
-
     }
 
     delete(id) {
@@ -64,6 +65,8 @@ class Todos extends Component {
 
     componentDidMount() {
         TodoAPI.getAll().then( (todos) => { this.setState({ todos: todos, found: todos }) } )
+        UserAPI.getAll().then( (users) => { this.setState({ users: users, found: users }) } )
+
     }
 
     handleTyping(event) {
@@ -114,7 +117,7 @@ class Todos extends Component {
                         {this.state.found.map((e) => (
                             <li key={e.id}>
                                 <Link to={`/todo/edit/${e.id}`}>
-                                    {e.task}
+                                    {`${e.task} (${this.state.users.filter( u => u.id === e.userId) || "unassigned"})`}
                                 </Link>
                             </li>
                         ))}
@@ -123,7 +126,7 @@ class Todos extends Component {
 
 
                 <div className="col border-left border-success">
-                    <Routes add={this.add} del={this.delete}/>
+                    <Routes add={this.add} del={this.delete} users={this.state.users}/>
                 </div>
             </div>
 

@@ -8,11 +8,12 @@ class TodoForm extends Component {
     constructor(props) {
         super(props);
         console.log(props)
-        this.state = {todo      : {task:"", id:"", complete:false}};
+        this.state = {todo : {task:"", id:"", complete:false}, users: props.users};
         this.save = this.save.bind(this);
         this.delete = this.delete.bind(this);
         this.handleTaskNameTyping = this.handleTaskNameTyping.bind(this);
         this.handleTaskComplete = this.handleTaskComplete.bind(this);
+        this.changeAssignee = this.changeAssignee.bind(this);
 
     }
 
@@ -22,7 +23,6 @@ class TodoForm extends Component {
         this.props.save(this.state.todo);
         event.currentTarget.reset();
         this.props.history.push("/todo");
-
     }
 
     delete(event) {
@@ -51,6 +51,15 @@ class TodoForm extends Component {
         });
     }
 
+    changeAssignee(event){
+        let userId = event.target.value;
+        this.setState(old => {
+            let newTodo = {...old.todo};
+            newTodo.userId = userId;
+            return {todo: newTodo};
+        });
+    }
+
     componentDidMount() {
         if (this.props.match.params.id)
             TodoAPI.get(this.props.match.params.id).then( (todo) => { this.setState({ todo }) } )
@@ -65,12 +74,12 @@ class TodoForm extends Component {
     }
 
     render() {
+        console.log(JSON.stringify(this.state.todo))
         return (
             <Fragment>
-
                 <h1>{this.props.match.params.id ? `Editing` : "Creating"}</h1>
                 {/*<p> {`${this.state.todo.task} (${this.state.todo.complete})`} </p>*/}
-                <p> {`${this.state.todo.task}`}( {this.state.todo.complete? 'Completed' : 'UnComplete' } ) </p>
+                <p> {`${this.state.todo.task}`} ({this.state.todo.complete? 'Complete' : 'Incomplete'}) </p>
 
                 <form onSubmit={this.save}>
                     <input type="hidden" value={this.state.todo.id}/>
@@ -85,6 +94,19 @@ class TodoForm extends Component {
                                onChange={this.handleTaskNameTyping}
                                placeholder="Enter full task"/>
                     </div>
+
+
+                    <div className="form-group">
+                        <label htmlFor="assignedTo">Assigned to</label>
+
+                        <select className="form-control" id="assignedTo" onChange={this.changeAssignee} value={this.state.todo.userId}>
+                            {this.state.users.map(u => (<option key={u.id} selected={this.state.todo.userId== u.id} value={u.id}>{u.name}</option>))}
+                        </select>
+
+                    </div>
+
+
+
 
 
                     <div className="form-check">

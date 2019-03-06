@@ -33,6 +33,7 @@ export const create = (todo) =>
 
 
 export const update = (todo) => {
+    console.log(todo);
     fetch(`${api}/todo/${todo.id}`, {
         method: 'PUT',
         headers: {
