@@ -102,23 +102,23 @@ class Todos extends Component {
 
             <div className="row">
 
-                <div className="col-1 border-top border-success">
+
+                <div className="col-1 border-top border-primary">
                     <NavLinks/>
                 </div>
 
-                <div className="col border-left  border-success">
+                <div className="col-6 border-left border-primary">
                     
 
                     <form>
 
-                        <div className="form-group row">
+                        <div className="input-group mb-3">
 
-                            <div className="col-sm-10">
-                                <input type="text" name="search" className="form-control" id="exampleInputEmail1" value={this.state.keyword} onChange={this.handleTyping} placeholder="Search tasks"/>
+                            <div className="input-group-prepend">
+                                <button type="button" className="btn btn-outline-primary"  id="button-addon1" onClick={this.clearTyping}>Clear</button>
                             </div>
-                            <div className="col-sm-2">
-                                <button type="button" className="btn btn-outline-primary" onClick={this.clearTyping}>Clear</button>
-                            </div>
+                            <input type="text" name="search" className="form-control" id="exampleInputTask1" value={this.state.keyword} onChange={this.handleTyping} placeholder="Search tasks" aria-describedby="button-addon1"/>
+
                         </div>
 
                     </form>

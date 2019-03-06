@@ -70,26 +70,38 @@ class TodoForm extends Component {
         return (
             <Fragment>
 
-                <h5>UserId: {this.state.todo.id}</h5>
-
-                <p>{this.props.match.params.id ? `Editing ${this.state.todo.task} ${this.state.todo.complete}` : "Create new todo"}</p>
+                <h1>{this.props.match.params.id ? `Editing` : "Creating"}</h1>
+                {/*<p> {`${this.state.todo.task} (${this.state.todo.complete})`} </p>*/}
+                <p> {`${this.state.todo.task}`}( {this.state.todo.complete? 'Completed' : 'UnComplete' } ) </p>
 
                 <form onSubmit={this.save}>
                     <input type="hidden" value={this.state.todo.id}/>
-                    <input type="text" name="name" value={this.state.todo.task} onChange={this.handleTaskNameTyping}/>
+
+                    <div className="form-group">
+                        <label htmlFor="taskName">TaskName</label>
+                        <input id="taskName"
+                               className="form-control"
+                               type="text"
+                               name="name"
+                               value={this.state.todo.task}
+                               onChange={this.handleTaskNameTyping}
+                               placeholder="Enter full task"/>
+                    </div>
+
+
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" checked={this.state.todo.complete} onChange={this.handleTaskComplete} id="complete"/>
                         <label className="form-check-label" htmlFor="complete">Done?</label>
                     </div>
-                    {/*<input type="text" name="email" value={this.state.todo.email} onChange={this.handleChange}/>*/}
-                    <br/>
-                    <button type="submit">save modifications</button>
-                </form>
 
-                <form  onSubmit={this.delete}>
-                    <button type="submit">delete</button>
-                </form>
+                    <div className="btn-group" role="group" >
+                        <button type="submit" className="btn btn-primary">Save</button>
+                        {this.props.match.params.id ?
+                            <button type="submit" className="btn btn-danger" onClick={this.delete}>Delete</button>
+                            : "" }
 
+                    </div>
+                </form>
             </Fragment>
         );
     }
