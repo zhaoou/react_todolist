@@ -87,10 +87,15 @@ class UserForm extends Component {
                                placeholder="Enter email"/>
                     </div>
 
-                    <button type="submit" className="btn btn-primary">Save changes</button>
+
+                    <div className="btn-group" role="group" >
+
+                    <button type="submit" className="btn btn-primary">Save</button>
                     {this.props.match.params.id ?
-                        <button type="submit" className="btn btn-danger" onClick={this.delete}>Delete User</button>
+                        <button type="submit" className="btn btn-danger" onClick={this.delete}>Delete</button>
                         : "" }
+                    </div>
+
                 </form>
 
 
