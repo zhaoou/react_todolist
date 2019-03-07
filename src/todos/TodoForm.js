@@ -8,7 +8,7 @@ class TodoForm extends Component {
     constructor(props) {
         super(props);
         console.log(props)
-        this.state = {todo : {task:"", id:"", complete:false}, users: props.users};
+        this.state = {todo : {task:"", id:"", complete:false, userId:""}, users: props.users, loading: true};
         this.save = this.save.bind(this);
         this.delete = this.delete.bind(this);
         this.handleTaskNameTyping = this.handleTaskNameTyping.bind(this);
@@ -29,9 +29,7 @@ class TodoForm extends Component {
         event.preventDefault();
         if (this.state.todo.id) this.props.del(this.state.todo.id);
         this.props.history.push("/todo");
-
     }
-
 
     handleTaskComplete(event){
         let checked = event.target.checked;
@@ -62,19 +60,27 @@ class TodoForm extends Component {
 
     componentDidMount() {
         if (this.props.match.params.id)
-            TodoAPI.get(this.props.match.params.id).then( (todo) => { this.setState({ todo }) } )
+            TodoAPI.get(this.props.match.params.id).then( (todo) => { this.setState({ todo, loading: false }) } )
+        this.setState({ loading: false });
     }
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.match.params.id !== prevProps.match.params.id) {
             console.log("componentDidUpdate conditions")
-            TodoAPI.get(this.props.match.params.id).then( (todo) => { this.setState({ todo }) } )
+            TodoAPI.get(this.props.match.params.id).then( (todo) => { this.setState({ todo, loading: false  }) } )
         }
     }
 
     render() {
-        console.log(JSON.stringify(this.state.todo))
+
+if(this.state.loading){
+    return(
+        <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+    )
+} else
         return (
             <Fragment>
                 <h1>{this.props.match.params.id ? `Editing` : "Creating"}</h1>
@@ -85,14 +91,14 @@ class TodoForm extends Component {
                     <input type="hidden" value={this.state.todo.id}/>
 
                     <div className="form-group">
-                        <label htmlFor="taskName">TaskName</label>
+                        <label htmlFor="taskName">Task</label>
                         <input id="taskName"
                                className="form-control"
                                type="text"
                                name="name"
                                value={this.state.todo.task}
                                onChange={this.handleTaskNameTyping}
-                               placeholder="Enter full task"/>
+                               placeholder="Task description"/>
                     </div>
 
 
@@ -100,14 +106,11 @@ class TodoForm extends Component {
                         <label htmlFor="assignedTo">Assigned to</label>
 
                         <select className="form-control" id="assignedTo" onChange={this.changeAssignee} value={this.state.todo.userId}>
-                            {this.state.users.map(u => (<option key={u.id} selected={this.state.todo.userId== u.id} value={u.id}>{u.name}</option>))}
+                            {this.state.users.map(u => (
+                                <option key={u.id} value={u.id}>{u.name}</option>
+                            ))}
                         </select>
-
                     </div>
-
-
-
-
 
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" checked={this.state.todo.complete} onChange={this.handleTaskComplete} id="complete"/>

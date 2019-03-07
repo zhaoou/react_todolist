@@ -48,7 +48,7 @@ class Todos extends Component {
             this.setState({todos: oldTodos, found: oldTodos});
 
         }else{// create
-            TodoAPI.create({task, complete}).then(todo => {
+            TodoAPI.create({task, complete, userId}).then(todo => {
                 let oldTodos = [...this.state.todos];
                 oldTodos.push(todo);
                 this.setState({todos: oldTodos, found: oldTodos});
@@ -64,9 +64,10 @@ class Todos extends Component {
     }
 
     componentDidMount() {
-        TodoAPI.getAll().then( (todos) => { this.setState({ todos: todos, found: todos }) } )
-        UserAPI.getAll().then( (users) => { this.setState({ users: users, found: users }) } )
-
+        console.log("did...")
+        Promise.all([TodoAPI.getAll(), UserAPI.getAll()]).then(([todos, users]) => {
+            this.setState({ todos: todos, users: users, found: todos })
+        });
     }
 
     handleTyping(event) {
@@ -86,6 +87,7 @@ class Todos extends Component {
 
 
     render() {
+        console.log(JSON.stringify(this.state.todos));
         return (
 
             <div className="row">
@@ -117,7 +119,10 @@ class Todos extends Component {
                         {this.state.found.map((e) => (
                             <li key={e.id}>
                                 <Link to={`/todo/edit/${e.id}`}>
-                                    {`${e.task} (${this.state.users.filter( u => u.id === e.userId) || "unassigned"})`}
+                                    {/*{e.task}*/}
+                                    {`${e.task} (${this.state.users.filter(u => u.id == e.userId)[0].name || "unassigned"})`}
+                                    { ! e.complete || <span className="badge badge-success">Done</span>}
+
                                 </Link>
                             </li>
                         ))}
