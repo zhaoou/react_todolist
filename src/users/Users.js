@@ -3,6 +3,7 @@ import UserForm from "./UserForm";
 import {Link, NavLink, Route} from "react-router-dom";
 
 import * as UserAPI from './UserAPI'
+import {Spinner} from "../Main";
 
 
 let NavLinks = () => (
@@ -24,7 +25,7 @@ class Users extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {users: [{id: "", email: "", name: ""}], keyword:"", found:[]};
+        this.state = {users: [{id: "", email: "", name: ""}], keyword:"", found:[], loading: true};
         this.add = this.add.bind(this);
         this.delete = this.delete.bind(this);
         this.handleTyping = this.handleTyping.bind(this);
@@ -75,11 +76,14 @@ class Users extends Component {
     }
 
     componentDidMount() {
-        UserAPI.getAll().then( (users) => { this.setState({ users: users, found:users }) } )
+        UserAPI.getAll().then( (users) => { this.setState({ users: users, found:users, loaded: false }) } )
     }
 
 
     render() {
+
+
+        if (this.state.loading) { return <Spinner/> }
         return (
 
             <Fragment>

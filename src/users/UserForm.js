@@ -1,12 +1,13 @@
 import React, {Component, Fragment} from 'react';
 import {withRouter} from "react-router-dom";
 import * as UserAPI from "./UserAPI";
+import {Spinner} from "../Main";
 
 class UserForm extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {user: {id: "", name: "", email: ""}};
+        this.state = {user: {id: "", name: "", email: ""}, loading: true};
         this.save = this.save.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.delete = this.delete.bind(this);
@@ -37,21 +38,21 @@ class UserForm extends Component {
     componentDidMount() {
         if (this.props.match.params.id)
             UserAPI.get(this.props.match.params.id).then((user) => {
-                this.setState({user})
+                this.setState({user, loading: false})
             })
     }
 
     componentDidUpdate(prevProps) {
-        console.log("update");
-        // Typical usage (don't forget to compare props):
         if (this.props.match.params.id && this.props.match.params.id !== prevProps.match.params.id) {
             UserAPI.get(this.props.match.params.id).then((user) => {
-                this.setState({user})
+                this.setState({user, loading: false})
             })
         }
     }
 
     render() {
+        if (this.state.loading) { return <Spinner/> }
+
         return (
 
             <Fragment>

@@ -3,6 +3,7 @@ import TodoForm from './TodoForm';
 import * as TodoAPI from "../todos/TodoAPI";
 import {Link, NavLink, Route} from "react-router-dom";
 import * as UserAPI from "../users/UserAPI";
+import {Spinner} from "../Main";
 
 let NavLinks = () => (
     <nav className="nav flex-column">
@@ -12,8 +13,10 @@ let NavLinks = () => (
 
 let Routes = (pr) => (
     <div>
-        <Route path="/todo/create"   render={(props) => <TodoForm {...props} save={pr.add} del={pr.del} users={pr.users}/>}/>
-        <Route path="/todo/edit/:id" render={(props) => <TodoForm {...props} save={pr.add} del={pr.del} users={pr.users}/>}/>
+        <Route path="/todo/create"
+               render={(props) => <TodoForm {...props} crud={{add: pr.add, del: pr.del}} users={pr.users}/>}/>
+        <Route path="/todo/edit/:id"
+               render={(props) => <TodoForm {...props} crud={{add: pr.add, del: pr.del}} users={pr.users}/>}/>
     </div>
 )
 
@@ -22,10 +25,11 @@ class Todos extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos: [{task:"Kill Bill", id:"", complete:true}],
+            todos: [{task: "Kill Bill", id: "", complete: true}],
             found: [],
-            keyword   : "",
-            users: []
+            keyword: "",
+            users: [],
+            loading: true
         };
         this.add = this.add.bind(this);
         this.delete = this.delete.bind(this);
@@ -36,7 +40,7 @@ class Todos extends Component {
 
     add({id, task, complete, userId}) {
         console.log(userId)
-        if(id){// update
+        if (id) {// update
             TodoAPI.update({id, task, complete, userId});
             let oldTodos = [...this.state.todos];
             let existingTodos = this.state.todos.filter(x => x.id == id);
@@ -44,10 +48,11 @@ class Todos extends Component {
                 existingTodos[0].task = task;
                 existingTodos[0].complete = complete;
                 existingTodos[0].userId = userId;
-            };
+            }
+            ;
             this.setState({todos: oldTodos, found: oldTodos});
 
-        }else{// create
+        } else {// create
             TodoAPI.create({task, complete, userId}).then(todo => {
                 let oldTodos = [...this.state.todos];
                 oldTodos.push(todo);
@@ -64,30 +69,30 @@ class Todos extends Component {
     }
 
     componentDidMount() {
-        console.log("did...")
         Promise.all([TodoAPI.getAll(), UserAPI.getAll()]).then(([todos, users]) => {
-            this.setState({ todos: todos, users: users, found: todos })
+            this.setState({todos: todos, users: users, found: todos, loading: false})
         });
     }
 
     handleTyping(event) {
         let input = event.target.value;
         this.setState(old => {
-            let oldTodos = [...this.state.todos.filter( td => td.task.includes(input))];
-            return {todos: [...this.state.todos], keyword : input, found: oldTodos};
+            let oldTodos = [...this.state.todos.filter(td => td.task.includes(input))];
+            return {todos: [...this.state.todos], keyword: input, found: oldTodos};
         });
     }
 
-    clearTyping(){
+    clearTyping() {
         this.setState(old => {
             let oldTodos = [...this.state.todos];
-            return {todos: [...this.state.todos], keyword : "", found: oldTodos};
+            return {todos: [...this.state.todos], keyword: "", found: oldTodos};
         });
     }
 
 
     render() {
-        console.log(JSON.stringify(this.state.todos));
+
+        if (this.state.loading) { return <Spinner/> }
         return (
 
             <div className="row">
@@ -98,35 +103,39 @@ class Todos extends Component {
                 </div>
 
                 <div className="col-6 border-left border-primary">
-                    
+
 
                     <form>
 
                         <div className="input-group mb-3">
 
                             <div className="input-group-prepend">
-                                <button type="button" className="btn btn-outline-primary"  id="button-addon1" onClick={this.clearTyping}>Clear</button>
+                                <button type="button" className="btn btn-outline-primary" id="button-addon1"
+                                        onClick={this.clearTyping}>Clear
+                                </button>
                             </div>
-                            <input type="text" name="search" className="form-control" id="exampleInputTask1" value={this.state.keyword} onChange={this.handleTyping} placeholder="Search tasks" aria-describedby="button-addon1"/>
+                            <input type="text" name="search" className="form-control" id="exampleInputTask1"
+                                   value={this.state.keyword} onChange={this.handleTyping} placeholder="Search tasks"
+                                   aria-describedby="button-addon1"/>
 
                         </div>
 
                     </form>
 
 
-
                     <ul>
                         {this.state.found.map((e) => (
-                            <li key={e.id}>
-                                <Link to={`/todo/edit/${e.id}`}>
-                                    {/*{e.task}*/}
-                                    {`${e.task} (${this.state.users.filter(u => u.id == e.userId)[0].name || "unassigned"})`}
-                                    { ! e.complete || <span className="badge badge-success">Done</span>}
+                                <li key={e.id}>
+                                    <Link to={`/todo/edit/${e.id}`}>
+                                        {`${e.task} (${this.state.users.filter(u => u.id == e.userId)[0].name || "unassigned"})`}
+                                        {!e.complete || <span className="badge badge-success">Done</span>}
+                                        {/*{e.task}*/}
 
-                                </Link>
-                            </li>
+                                    </Link>
+                                </li>
                         ))}
                     </ul>
+
                 </div>
 
 

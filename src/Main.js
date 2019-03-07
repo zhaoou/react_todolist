@@ -9,6 +9,14 @@ let NotFound = () => (<h3> Dis dint find </h3>);
 
 let Home = () => (<h3> Home  </h3>);
 
+let Spinner = () => (
+    <div className="d-flex justify-content-center">
+        <div className="spinner-grow" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+    </div>
+)
+
 let NavLinks = () => (
     <nav className="nav flex-column">
         <NavLink exact className="nav-link" activeClassName="disabled" to="/">Home</NavLink>
@@ -48,3 +56,4 @@ class Main extends Component {
 }
 
 export default Main;
+export {Spinner};
