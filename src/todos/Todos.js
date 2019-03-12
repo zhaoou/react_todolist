@@ -19,6 +19,8 @@ let Routes = (pr) => (
     </div>
 )
 
+
+
 class Todos extends Component {
 
     constructor(props) {
@@ -133,7 +135,7 @@ class Todos extends Component {
                 </div>
 
 
-                <div className="col border-left border-success">
+                <div className="col border-left border-primary">
                     <Routes add={this.add} del={this.delete} users={this.state.users}/>
                 </div>
             </div>

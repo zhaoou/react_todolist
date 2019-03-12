@@ -39,7 +39,7 @@ class Main extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {user: {email: "northernpeople@gmail.com", id: "123"}};
+        this.state = {user: {email: "", id: ""}};
         this.updateUser = this.updateUser.bind(this);
     }
 

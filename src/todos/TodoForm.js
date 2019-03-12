@@ -3,6 +3,14 @@ import {withRouter} from "react-router-dom";
 import * as TodoAPI from "../todos/TodoAPI";
 import {Spinner} from "../Main";
 
+let validate = (todo) => {
+    let errors = [];
+    if(todo.task.length < 10) {
+        errors.push = "task should have at least 10 character";
+    }
+    return errors;
+}
+
 
 class TodoForm extends Component {
 
@@ -82,6 +90,7 @@ class TodoForm extends Component {
 
                         <div className="form-group">
                             <label htmlFor="taskName">Task</label>
+                            <p className="text-danger">{this.state.todo.task.trim().length > 10 || (" length should be greater then 10")} </p>
                             <input id="taskName"
                                    className="form-control"
                                    type="text"
@@ -98,7 +107,7 @@ class TodoForm extends Component {
                         </div>
 
                         <div className="btn-group" role="group">
-                            <button type="submit" className="btn btn-primary">Save</button>
+                            {this.state.todo.task.trim().length <= 10 || <button type="submit" className="btn btn-primary">Save</button>}
                             {this.props.match.params.id ?
                                 <button type="submit" className="btn btn-danger" onClick={this.delete}>Delete</button>
                                 : ""}

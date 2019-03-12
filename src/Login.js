@@ -39,8 +39,8 @@ class Login extends Component {
             <Fragment>
 
                 { ! this.props.user.email ?
-                    (<button onClick={this.authenticateWithGithub}>github login</button>)
-                    : (<button onClick={this.logout}>Log Out!</button>) }
+                    (<button  className="btn btn-outline-primary" onClick={this.authenticateWithGithub}>github login</button>)
+                    : (<button  className="btn btn-outline-danger" onClick={this.logout}>Log Out!</button>) }
 
             </Fragment>
         );
