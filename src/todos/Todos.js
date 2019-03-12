@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import TodoForm from './TodoForm';
 import * as TodoAPI from "../todos/TodoAPI";
 import {Link, NavLink, Route} from "react-router-dom";
-import * as UserAPI from "../users/UserAPI";
 import {Spinner} from "../Main";
 
 let NavLinks = () => (
@@ -14,9 +13,9 @@ let NavLinks = () => (
 let Routes = (pr) => (
     <div>
         <Route path="/todo/create"
-               render={(props) => <TodoForm {...props} crud={{add: pr.add, del: pr.del}} users={pr.users}/>}/>
+               render={(props) => <TodoForm {...props} crud={{add: pr.add, del: pr.del}}/>}/>
         <Route path="/todo/edit/:id"
-               render={(props) => <TodoForm {...props} crud={{add: pr.add, del: pr.del}} users={pr.users}/>}/>
+               render={(props) => <TodoForm {...props} crud={{add: pr.add, del: pr.del}}/>}/>
     </div>
 )
 
@@ -28,7 +27,6 @@ class Todos extends Component {
             todos: [{task: "Kill Bill", id: "", complete: true}],
             found: [],
             keyword: "",
-            users: [],
             loading: true
         };
         this.add = this.add.bind(this);
@@ -38,26 +36,23 @@ class Todos extends Component {
     }
 
 
-    add({id, task, complete, userId}) {
-        console.log(userId)
+    add({id, task, complete}) {
         if (id) {// update
-            TodoAPI.update({id, task, complete, userId});
+            TodoAPI.update({id, task, complete});
             let oldTodos = [...this.state.todos];
             let existingTodos = this.state.todos.filter(x => x.id == id);
             if (existingTodos[0]) {
                 existingTodos[0].task = task;
                 existingTodos[0].complete = complete;
-                existingTodos[0].userId = userId;
             }
             ;
             this.setState({todos: oldTodos, found: oldTodos});
 
         } else {// create
-            TodoAPI.create({task, complete, userId}).then(todo => {
+            TodoAPI.create({task: task, complete:complete, userEmail: this.props.userEmail}).then(todo => {
                 let oldTodos = [...this.state.todos];
                 oldTodos.push(todo);
                 this.setState({todos: oldTodos, found: oldTodos});
-
             })
         }
     }
@@ -69,8 +64,8 @@ class Todos extends Component {
     }
 
     componentDidMount() {
-        Promise.all([TodoAPI.getAll(), UserAPI.getAll()]).then(([todos, users]) => {
-            this.setState({todos: todos, users: users, found: todos, loading: false})
+        Promise.all([TodoAPI.getAll(this.props.userEmail)]).then(([todos]) => {
+            this.setState({todos: todos,  found: todos, loading: false})
         });
     }
 
@@ -127,9 +122,8 @@ class Todos extends Component {
                         {this.state.found.map((e) => (
                                 <li key={e.id}>
                                     <Link to={`/todo/edit/${e.id}`}>
-                                        {`${e.task} (${this.state.users.filter(u => u.id == e.userId)[0].name || "unassigned"})`}
+                                        {e.task}
                                         {!e.complete || <span className="badge badge-success">Done</span>}
-                                        {/*{e.task}*/}
 
                                     </Link>
                                 </li>

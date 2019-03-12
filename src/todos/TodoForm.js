@@ -9,12 +9,11 @@ class TodoForm extends Component {
     constructor(props) {
         super(props);
         console.log(props)
-        this.state = {todo: {task: "", id: "", complete: false, userId: ""}, users: props.users, loading: true};
+        this.state = {todo: {task: "", id: "", complete: false, userId: ""},  loading: true};
         this.save = this.save.bind(this);
         this.delete = this.delete.bind(this);
         this.handleTaskNameTyping = this.handleTaskNameTyping.bind(this);
         this.handleTaskComplete = this.handleTaskComplete.bind(this);
-        this.changeAssignee = this.changeAssignee.bind(this);
 
     }
 
@@ -46,15 +45,6 @@ class TodoForm extends Component {
         this.setState(old => {
             let newTodo = {...old.todo};
             newTodo.task = input;
-            return {todo: newTodo};
-        });
-    }
-
-    changeAssignee(event) {
-        let userId = event.target.value;
-        this.setState(old => {
-            let newTodo = {...old.todo};
-            newTodo.userId = userId;
             return {todo: newTodo};
         });
     }
@@ -99,18 +89,6 @@ class TodoForm extends Component {
                                    value={this.state.todo.task}
                                    onChange={this.handleTaskNameTyping}
                                    placeholder="Task description"/>
-                        </div>
-
-
-                        <div className="form-group">
-                            <label htmlFor="assignedTo">Assigned to</label>
-
-                            <select className="form-control" id="assignedTo" onChange={this.changeAssignee}
-                                    value={this.state.todo.userId}>
-                                {this.state.users.map(u => (
-                                    <option key={u.id} value={u.id}>{u.name}</option>
-                                ))}
-                            </select>
                         </div>
 
                         <div className="form-check">

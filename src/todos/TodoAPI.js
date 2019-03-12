@@ -1,13 +1,7 @@
 
-// const api = "https://jsonplaceholder.typicode.com"
 
 const api = "http://localhost:8080"
 
-
-// Generate a unique token for storing your bookshelf data on the backend server.
-// let token = localStorage.token
-// if (!token)
-//     token = localStorage.token = Math.random().toString(36).substr(-8)
 
 const headers = {
     'Accept': 'application/json',
@@ -17,8 +11,8 @@ export const get = (id) =>
      fetch(`${api}/todo/${id}`, { headers })
         .then(res => res.json())
 
-export const getAll = () =>
-    fetch(`${api}/todo`, { headers })
+export const getAll = (email) =>
+    fetch(`${api}/todo?user_email=${email}`, { headers })
         .then(res => res.json())
 
 export const create = (todo) =>

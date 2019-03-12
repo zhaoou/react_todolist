@@ -1,13 +1,8 @@
-import {Link, NavLink, Route, Switch} from "react-router-dom";
+import {NavLink, Route, Switch} from "react-router-dom";
 import React, {Component, Fragment} from 'react';
 import Todos from "./todos/Todos";
-import Users from "./users/Users";
+import Login from "./Login";
 
-let About = (props) => (<h3> Abuot</h3>);
-
-let NotFound = () => (<h3> Dis dint find </h3>);
-
-let Home = () => (<h3> Home  </h3>);
 
 let Spinner = () => (
     <div className="d-flex justify-content-center">
@@ -17,37 +12,56 @@ let Spinner = () => (
     </div>
 )
 
+
+let Home = (props) => (<h3> You are signed in as: {props.user.user.email} </h3>);
+
+
 let NavLinks = () => (
     <nav className="nav flex-column">
         <NavLink exact className="nav-link" activeClassName="disabled" to="/">Home</NavLink>
         <NavLink exact className="nav-link" activeClassName="disabled" to="/todo">Todos</NavLink>
-        <NavLink exact className="nav-link" activeClassName="disabled" to="/user">Users</NavLink>
-        <NavLink exact className="nav-link" activeClassName="disabled" to="/about">About</NavLink>
-
     </nav>
 )
 
-let Routes = () => (
+let Routes = (user) => (
     <Switch>
-        <Route exact path="/"   component={Home}/>
-        <Route path="/todo"     component={Todos}/>
-        <Route path="/about"    component={About}/>
-        <Route path="/user"     component={Users}/>
-        {/*<Route path="/:page"    component={NotFound}/>*/}
+        <Route exact path="/"
+               render={(props) => <Home {...props} user={user}/>}/>
+
+        <Route path="/todo"
+               render={(props) => <Todos {...props} user={user}/>}/>
+
     </Switch>
 )
 
 
 class Main extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {user: {email: "northernpeople@gmail.com", id: "123"}};
+        this.updateUser = this.updateUser.bind(this);
+    }
+
+    updateUser(user) {
+        console.log(user);
+        this.setState({user});
+    }
+
     render() {
+
         return (
             <Fragment>
                 <div className="row">
                     <div className="col-1 border-top border-primary">
-                        <NavLinks/>
+                        {(this.state.user.email) ? <NavLinks/> : ''}
+
+                        <Login update={this.updateUser} user={this.state.user}/>
+
+
                     </div>
                     <div className="col">
-                        <Routes/>
+                        {(this.state.user.email) ? <Routes user={this.state.user}/> : ''}
                     </div>
                 </div>
             </Fragment>
